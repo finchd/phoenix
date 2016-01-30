@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', function() {
   'use strict';
 
   var frameContainer = document.getElementById('frame-container');
+  var browserContainer;
 
   var gobackButton = document.getElementById('goback-button');
   var goforwardButton = document.getElementById('goforward-button');
@@ -96,6 +97,7 @@ window.addEventListener('DOMContentLoaded', function() {
     if (!currentTab) {
       currentTab = new Tab(url);
       frameContainer.appendChild(currentTab.iframe);
+      browserContainer = frameContainer.getElementsByTagName("iframe")[0];
     } else if (currentUrlInput === currentTab.title) {
       currentTab.reload();
     } else {
@@ -120,7 +122,7 @@ window.addEventListener('DOMContentLoaded', function() {
         break;
       case domButton:
         if (currentTab) {
-          printDOMTree(frameContainer, null);
+          printDOMTree(browserContainer.contentWindow.document, null);
         }
     }
   });
@@ -237,7 +239,7 @@ window.addEventListener('DOMContentLoaded', function() {
     outputWindow.document.write("<HTML><HEAD><h1>DOM Tree</h1><TITLE>DOM Tree</TITLE></HEAD><BODY>\n");
     outputWindow.document.write("<CODE>\n");
     // Print the tree
-    traverseDOMTree(outputWindow.document, domElement, 0);
+    traverseDOMTree(outputWindow.document, domElement, 1);
     outputWindow.document.write("<BR><BR>");
     // Print the array
     outputWindow.document.write("Stored tags (in order): " + domarray.toString());
